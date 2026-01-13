@@ -11,7 +11,7 @@ module.exports = defineConfig({
   use: {
     baseURL: 'https://www.saucedemo.com',
     trace: 'on-first-retry',
-    headless: false,
+    headless: false, // Visible browser for regular test runs
     slowMo: 500, // Slow down all actions by 500ms to see them better
   },
   projects: [

@@ -26,6 +26,11 @@ Run tests in headed mode (see browser):
 npm run test:headed
 ```
 
+Run with UI mode:
+```bash
+npx playwright test --ui
+```
+
 ## Test Case
 
 The test performs the following:

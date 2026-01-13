@@ -4,7 +4,8 @@
   "description": "Simple Playwright automation tests",
   "scripts": {
     "test": "playwright test && playwright show-report",
-    "test:headed": "playwright test --headed && playwright show-report"
+    "test:headed": "playwright test --headed && playwright show-report",
+    "test:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0"
