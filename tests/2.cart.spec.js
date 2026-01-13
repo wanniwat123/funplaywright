@@ -19,6 +19,7 @@ test('Add multiple products to cart and verify cart count', async ({ page }) => 
   await addToCart(page, 'sauce-labs-backpack');
   await verifyCartCount(page, 1);
   
+  
   // Add second product
   await addToCart(page, 'sauce-labs-bike-light');
   await verifyCartCount(page, 2);
