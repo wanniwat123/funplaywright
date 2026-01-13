@@ -12,13 +12,15 @@ module.exports = defineConfig({
     baseURL: 'https://www.saucedemo.com',
     trace: 'on-first-retry',
     headless: false,
-    channel: 'chrome',
     slowMo: 500, // Slow down all actions by 500ms to see them better
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'chrome',
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
     },
   ],
 });

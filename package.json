@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Simple Playwright automation tests",
   "scripts": {
-    "test": "playwright test",
-    "test:headed": "playwright test --headed"
+    "test": "playwright test && playwright show-report",
+    "test:headed": "playwright test --headed && playwright show-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0"
