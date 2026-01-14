@@ -30,3 +30,4 @@ Run with UI mode:
 ```bash
 npx playwright test --ui
 ```
+
