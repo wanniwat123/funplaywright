@@ -1,5 +1,4 @@
 const { test, expect } = require('@playwright/test');
-const { login } = require('./utils/auth');
 const {
   selectSortOption,
   getProductNames,
@@ -8,17 +7,22 @@ const {
   verifyPriceOrder
 } = require('./utils/sorting');
 
-// Login before each test
-test.beforeEach(async ({ page }) => {
-  await login(page);
-  await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
-  // Wait for page to be fully loaded before proceeding
+// Authentication handled by storage state (global-setup.js)
+// No beforeEach needed - tests start with authenticated state
+
+/**
+ * Helper function to ensure page is ready for testing
+ * @param {import('@playwright/test').Page} page - Playwright page object
+ */
+async function ensurePageReady(page) {
+  await page.goto('/inventory.html');
   await page.waitForLoadState('networkidle');
-  // Ensure products are visible
   await page.locator('.inventory_item').first().waitFor({ state: 'visible' });
-});
+}
 
 test('Verify sorting by Name (A to Z)', async ({ page }) => {
+  await ensurePageReady(page);
+  
   // Arrange: Select A-Z sort option
   await selectSortOption(page, 'az');
   
@@ -32,11 +36,11 @@ test('Verify sorting by Name (A to Z)', async ({ page }) => {
   if (!isSorted) {
     console.log('Expected A-Z order, but got:', productNames);
   }
-  
-  await page.waitForTimeout(1000);
 });
 
 test('Verify sorting by Name (Z to A)', async ({ page }) => {
+  await ensurePageReady(page);
+  
   // Arrange: Select Z-A sort option
   await selectSortOption(page, 'za');
   
@@ -50,11 +54,11 @@ test('Verify sorting by Name (Z to A)', async ({ page }) => {
   if (!isSorted) {
     console.log('Expected Z-A order, but got:', productNames);
   }
-  
-  await page.waitForTimeout(1000);
 });
 
 test('Verify sorting by Price (low to high)', async ({ page }) => {
+  await ensurePageReady(page);
+  
   // Arrange: Select low to high price sort option
   await selectSortOption(page, 'lohi');
   
@@ -68,11 +72,11 @@ test('Verify sorting by Price (low to high)', async ({ page }) => {
   if (!isSorted) {
     console.log('Expected low-to-high order, but got:', productPrices);
   }
-  
-  await page.waitForTimeout(1000);
 });
 
 test('Verify sorting by Price (high to low)', async ({ page }) => {
+  await ensurePageReady(page);
+  
   // Arrange: Select high to low price sort option
   await selectSortOption(page, 'hilo');
   
@@ -86,6 +90,4 @@ test('Verify sorting by Price (high to low)', async ({ page }) => {
   if (!isSorted) {
     console.log('Expected high-to-low order, but got:', productPrices);
   }
-  
-  await page.waitForTimeout(1000);
 });
