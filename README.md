@@ -2,6 +2,14 @@
 
 Simple Playwright test automation for SauceDemo.
 
+## Getting Started
+
+Clone the repository:
+```bash
+git clone https://github.com/wanniwat123/funplaywright.git
+cd funplaywright
+```
+
 ## Setup
 
 1. Install dependencies:
