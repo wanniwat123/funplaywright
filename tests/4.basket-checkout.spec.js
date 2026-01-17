@@ -1,20 +1,25 @@
 const { test, expect } = require('@playwright/test');
-const { login } = require('./utils/auth');
-// Login before each test
-test.beforeEach(async ({ page }) => {
-  await login(page);
-  await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
-  await page.waitForTimeout(1000);
-});
+const { addToCart } = require('./utils/cart');
+
+/**
+ * Basic Checkout Test Suite
+ * Note: More comprehensive checkout tests are in 7.checkout-validation.spec.js and 10.checkout-complete.spec.js
+ */
+
+// Authentication handled by storage state (global-setup.js)
+// No beforeEach needed - tests start with authenticated state
 
 test('User can complete checkout flow with a single item', async ({ page }) => {
+  await page.goto('/inventory.html');
+  await page.waitForLoadState('networkidle');
+  await page.locator('.inventory_item').first().waitFor({ state: 'visible' });
+  
   // Add product to cart
-  await page.click('button[data-test="add-to-cart-sauce-labs-backpack"]');
+  await addToCart(page, 'sauce-labs-backpack');
   
   // Navigate to cart
   await page.click('.shopping_cart_link');
   await expect(page).toHaveURL(/cart.html/);
-  await page.waitForTimeout(1000);
   
   // Verify product is in cart
   await expect(page.locator('.inventory_item_name')).toContainText('Sauce Labs Backpack');
@@ -23,17 +28,16 @@ test('User can complete checkout flow with a single item', async ({ page }) => {
   await page.click('button[data-test="checkout"]');
   
   // Fill in checkout information
-  await page.fill('input[data-test="firstName"]', 'koki');
-  await page.fill('input[data-test="lastName"]', 'test');
-  await page.fill('input[data-test="postalCode"]', '123');
-  await page.waitForTimeout(1000);
+  await page.fill('input[data-test="firstName"]', 'John');
+  await page.fill('input[data-test="lastName"]', 'Doe');
+  await page.fill('input[data-test="postalCode"]', '12345');
 
   // Continue to overview
-  await page.locator('input[data-test="continue"]').click({ timeout: 10000 });
+  await page.click('input[data-test="continue"]');
   
   // Finish order
   await page.click('button[data-test="finish"]');
 
   // Verify success message
   await expect(page.locator('.complete-header')).toHaveText('Thank you for your order!');
-})
+});
